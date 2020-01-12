@@ -1,5 +1,5 @@
                         de'Arnise Romance
-                           VERSION 6
+                           VERSION 7
               A Pocket Plane Group Project for Baldur's Gate 2
                     http://www.pocketplane.net
 
@@ -241,6 +241,10 @@ V6: EET compatibility
     renamed setup-deArnise.tp2 -> deArnise.tp2 to support ALIEN's "Project Infinity"
     added deArnise.ini to support ALIEN's "Project Infinity"
     Updated to WeiDU 246
+
+V7: updated coran.ini with the GitHub address for download
+    added folder libiconv-1.9.2-1-src.zip with iconv licence info
+
 
 CREDITS
 
