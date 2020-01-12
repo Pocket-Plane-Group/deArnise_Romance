@@ -1,0 +1,27 @@
+IF
+True()
+THEN
+RESPONSE #100
+CutSceneId(Player1)
+FadeToColor([20.0],0)
+SetGlobal("PGNaliaQuest","GLOBAL",3)
+Wait(1)
+ActionOverride("PGNALTEO",DestroySelf()) 
+LeaveAreaLUAPanic("AR1307","",[2058.1278],8)
+LeaveAreaLUA("AR1307","",[2058.1278],8)
+ActionOverride(Player2,LeaveAreaLUA("AR1307","",[2057.1260],8))
+ActionOverride(Player3,LeaveAreaLUA("AR1307","",[2030.1261],8))
+ActionOverride(Player4,LeaveAreaLUA("AR1307","",[2017.1277],8))
+ActionOverride(Player5,LeaveAreaLUA("AR1307","",[2034.1256],8))
+ActionOverride(Player6,LeaveAreaLUA("AR1307","",[2097.1288],8))
+MultiPlayerSync()
+Explore()
+Wait(1)
+CreateCreature("PGNALBUR",[2080.1247],0)
+CreateCreature("PGNALTEO",[2070.1274],8)
+Wait(1)
+FadeFromColor([20.0],0)
+MoveViewObject(Player1,INSTANT)
+Wait(1)
+ActionOverride("PGNALBUR",StartDialogueNoSet("NALIA"))
+END

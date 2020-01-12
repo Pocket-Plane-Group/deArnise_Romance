@@ -1,0 +1,137 @@
+@0     = ~Romance de'Arnise pour Baldur's Gate II~
+@1     = ~Corps de Nalia~
+@2     = ~Nalia a été capturée par Bodhi et transformée en vampire, vous obligeant à la tuer. Peut-être existe-t-il un moyen de la ramener à la vie, mais vous ignorez lequel.~
+@3     = ~Talisman de Burwood~
+@4     = ~Ce talisman a appartenu à Burwood, le vieux maître de Nalia.~
+@5     = ~Teodora~ 
+@6     = ~Mendiant~
+@7     = ~Burwood~
+@8     = ~Ghazamonar~
+@9     = ~Wivara~
+@10    = ~Isaea~
+@11    = ~Tereen~
+@12    = ~Gellester~
+@13    = ~Pockney~
+@14    = ~Lemmish~
+@15    = ~Alynder~
+@10000 = ~Le combat final contre Bodhi
+
+Bodhi est apparue dans une embuscade peu avant que j'atteigne son antre, me prévenant qu'elle savait ce que je faisais et qu'elle me volait la personne la plus chère à mon coeur : Nalia. Avant de disparaître et de lâcher d'autres de ses morts-vivants à mes trousses, Bodhi m'a dit que si je continuais, je pourrais perdre beaucoup plus que je ne croyais. Je ne peux pas abandonner le Rhynn Lanthorn... mais désormais, la vie et l'âme immortelle de quelqu'un que j'aime sont aussi en jeu !~
+@10001 = ~Le combat final contre Bodhi
+
+Alors que je craignais depuis quelque temps que la vengeance finale de Bodhi serait de m'enlever à jamais Nalia, il semble que ce que disait le livre des légendes était vrai... l'idole d'Amaunator a non seulement ramené Nalia à la vie, mais a aussi chassé sa malédiction de vampire.~
+@10002 = ~La traque d'Isaea
+
+Durant notre dernière visite au château, nous avons trouvé le vieux mentor de Nalia, Burwood, qui s'est récemment échappé de l'étreinte d'Isaea Roenall et s'accrochait tout juste à la vie. Avant d'expirer, Burwood a révélé que c'était Isaea qui avait organisé la mise à sac du château. Isaea s'est apparemment établi dans une nouvelle base d'opérations et cela pourrait prendre des mois avant de le trouver, mais nous avons fait une heureuse découverte : Burwood s'est échappé à l'aide d'un talisman magique spécial qui peut nous transporter directement jusqu'au point de son dernier départ. Notre chance est modérée par le fait que le talisman s'est brisé durant l'évasion de Burwood.
+
+Si nous trouvons Wivara, l'apprenti de Burwood, nous pourrions le lui faire réparer. Burwood croit que le garçon erre au beau milieu des Mages Cagoulés, et donc, c'est parmi leurs officiels que nous devrions commencer notre recherche.~
+@10003 = ~La traque d'Isaea
+
+Nous avons empêché Wivara-le-Lent-d'Esprit de se rendre auprès des Mages Cagoulés. Plus important, nous avons eu connaissance d'un maître magicien qui pourrait réparer le talisman de téléportation de Burwood. Son nom est Alynder, et nous pourrions le trouver aux Docks.~
+@10004 = ~La traque d'Isaea
+
+Nous avons trouvé Alynder, le magicien particulièrement étrange. Il nous a assuré qu'il peut réparer le talisman qui nous permettra d'atteindre Isaea, mais il a besoin de deux diamants ou de mille huit cents pièces d'or pour réaliser la réparation.~
+@10005 = ~La traque d'Isaea
+
+Alynder a réparé le talisman de Burwood. En activant le dispositif, nous devrions être téléportés instantanément au point où Burwood l'a utilisé pour la dernière fois : l'antre privé du déloyal Isaea Roenall. Nalia est impatiente d'y aller sur-le-champ.~
+@10006 = ~La traque d'Isaea
+
+Nous avons affronté Isaea dans sa cachette secrète. Pour faire court, il a tout avoué. Avec l'aide d'un pyromancien sous ses ordres, il a convaincu Tor'Gal et son armée de trolls qu'il était un dragon qui crachait du feu, sous forme humaine, ce qui a apparemment effrayé les puissantes, mais hautement inflammables créatures. Nalia n'a pas apprécié.~
+@10007 = ~La traque d'Isaea
+
+En utilisant le talisman de Burwood pour nous téléporter, nous avons défait Isaea Roenall et sa suite. Nalia a eu sa vengeance contre lui pour le rôle qu'il a joué dans la mort de son père et de son mentor, et nous avons éliminé l'un des bandits les plus visqueux et fourbes d'Athkatla.~
+
+
+// WeiDU prompts
+@-1000= "Le mod %TP2_FILE_NAME% contient"
+@-1001= "composants optionnels distincts.
+Pour gagner du temps, vous pouvez choisir ce que vous souhaitez faire d'eux
+au niveau general plutot que de repondre aux questions pour chacun.
+"
+@-1002= "Que faut-il faire de tous les composants qui NE sont PAS ENCORE installes ?
+Les [I]nstaller, les [S]auter, dem[A]nder pour chacun ? "
+@-1003= "Que faut-il faire de tous les composants qui sont DEJA installes ?
+Les [R]einstaller, les s[U]pprimer, les [S]auter, dem[A]nder pour chacun ? "
+
+@-1004= "S'IL VOUS PLAIT, envoyez par e-mail le fichier"
+@-1005= "a"
+
+@-1006= "Installer le composant ["
+@-1007= "] ?
+[R]einstaller, co[N]server, s[U]pprimer ou [Q]uitter ? "
+@-1008= "] ?
+[I]nstaller, [N]e pas installer ou [Q]uitter ? "
+
+@-1009= "Entrez une partie du nom du module : "
+
+@-1010= "Reinstallation du composant ["
+@-1011= "] "
+@-1012= "Reinstallation dans la langue"
+
+@-1013= "Suppression de l'ancienne installation de ["
+@-1014= "] au prealable..."
+@-1015= "SUPPRESSION REUSSIE DE L'ANCIEN"
+
+@-1016= "Installation en cours"
+@-1017= "ERREUR pendant l'installation de ["
+@-1018= "], retour a l'etat anterieur"
+@-1019= "INSTALLATION REUSSIE"
+@-1020= "Saute"
+@-1021= "Suppression de ["
+@-1022= "] (composant #"
+@-1023= ")"
+@-1024= "SUPPRESSION REUSSIE DE ["
+
+@-1025= "] ?
+[R]einstaller, co[N]server, s[U]pprimer, [Q]uitter ou choisir un parmi :"
+@-1026= "] ?
+[N]e pas installer, [Q]uitter ou choisir un parmi :"
+@-1027= " (installe actuellement)"
+
+@-1028= "Souhaitez-vous afficher les composants de ["
+@-1029= "] ?
+[Y]Oui, [N]on ? "
+
+@-1030= "] ?
+choisir un parmi :"
+@-1031= "] ?
+[R]einstaller, co[N]server, [Q]uitter ou choisir un parmi :"
+@-1032= "INSTALLATION ECHOUEE A CAUSE D'ERREURS"
+@-1033= "INSTALLATION AVEC DES ALERTES"
+@-1034= "Souhaitez-vous afficher les instructions (ReadMe) ? [Y]Oui [N]on"
+@-1035= "Dans la langue"
+
+@-1036= "Saute le GROUPE ["
+@-1037= "] pour cause d'absence des pre-requis."
+
+@-1038= "dem[A]nder pour chaque composant, tout [S]auter, ou choisir une selection pre-definie :"
+@-1039= "dem[A]nder pour chaque composant, [R]einstaller la configuration courante, tout s[U]pprimer, tout [S]auter, ou choisir une selection pre-definie :"
+
+@-1040= "
+Veuillez choisir la langue dans laquelle vous souhaitez jouer au jeu.
+Si par la suite vous desirez jouer au jeu dans une langue differente, il vous
+faudra editer le fichier weidu.conf et reinstaller vos mods.
+"
+@-1041= "Tcheque"
+@-1042= "Allemand"
+@-1043= "Anglais"
+@-1044= "Espagnol"
+@-1045= "Francais"
+@-1046= "Italien"
+@-1047= "Polonais"
+@-1048= "Portugais"
+@-1049= "Turc"
+@-1050= "Japonais"
+@-1051= "Coreen"
+@-1052= "Chinois simplifie"
+@-1053= "Russe"
+@-1054= "Ukrainien"
+
+@-1060= "
+Ce jeu est disponible en plusieurs langues mais WeiDU ne sait pas laquelle a ete choisie quand ce mod a ete installe.
+
+Veuillez indiquer quelle langue du jeu a ete utilisee quand vous avez installe ce mod. Votre choix servira jusqu'a ce que WeiDU s'arrete mais ne sera pas memorise.
+"
+@-1061= "
+Utilisation de"
+@-1062= " et "

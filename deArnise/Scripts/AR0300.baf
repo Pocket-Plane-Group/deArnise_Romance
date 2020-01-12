@@ -1,0 +1,8 @@
+IF 
+GlobalGT("PGNaliaQuest","GLOBAL",4)
+Global("PGNaliaAlynder","GLOBAL",0)
+THEN
+RESPONSE #100
+CreateCreature("PGNalAly",[2897.1223],0)
+SetGlobal("PGNaliaAlynder","GLOBAL",1)
+END

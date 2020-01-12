@@ -1,0 +1,31 @@
+IF
+Global("PGCleanseVampire","AR1401",2)
+Global("PGNaliaVampire","GLOBAL",3)
+Name("Nalia",Myself)
+AreaCheck("AR1401")
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaVampire","GLOBAL",4)
+DialogInterrupt(TRUE)
+ChangeAIScript("Nalia",OVERRIDE)
+END
+
+IF
+Global("PGNaliaVampire","GLOBAL",1)
+Global("PGRomanceVampire","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGRomanceVampire","GLOBAL",1)
+Continue()
+END
+
+IF
+Global("PGNaliaVampire","GLOBAL",1)
+Global("PGRomanceVampireTeleport","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGRomanceVampireTeleport","GLOBAL",1)
+CreateVisualEffectObject("SPDIMNDR",Myself)
+Wait(2)
+DestroySelf()
+END

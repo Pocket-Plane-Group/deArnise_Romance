@@ -1,0 +1,13 @@
+IF
+True()
+THEN
+RESPONSE #100
+CutSceneId(Player1)
+FadeToColor([20.0],0)
+SetGlobal("PGNaliaBolumirSummoned","GLOBAL",1)
+Wait(1)
+ActionOverride("KPCHAP01",JumpToPoint([2090.1220])
+Wait(1)
+FadeFromColor([20.0],0)
+ActionOverride("KPCHAP01",StartDialogueNoSet("NALIA"))
+END

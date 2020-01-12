@@ -1,0 +1,891 @@
+// Nalia match
+IF 
+InParty(Myself)
+Global("PCKeepOwner","GLOBAL",1)
+Gender(Player1,MALE)
+OR(4)
+Race(Player1,HUMAN)
+Race(Player1,ELF)
+Race(Player1,HALF_ELF)
+Race(Player1,DWARF)
+Global("PGNaliaMatch","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaMatch","GLOBAL",1)
+END
+
+// Nalia is(was) a vampire
+IF
+!InParty(Myself)
+Global("PGNaliaVampire","GLOBAL",4)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaVampire","GLOBAL",5)
+StartDialogueNoSet(Player1)
+END
+
+// We're talking again
+IF
+InParty(Myself)
+GlobalGT("Chapter","GLOBAL",%bg2_chapter_5%)
+Global("PGNaliaNotSpeaking","GLOBAL",1) 
+Global("PGNaliaTalkAgain","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaTalkAgain","GLOBAL",1)
+RealSetGlobalTimer("PGNaliaTalkAgainTimer","GLOBAL",10)
+END
+
+IF 
+InParty(Myself)
+Global("PGNaliaTalkAgain","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaTalkAgainTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaTalkAgain","GLOBAL",2)
+END
+
+IF 
+InParty(Myself)
+Global("PGNaliaTalkAgain","GLOBAL",2)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+THEN
+RESPONSE #100
+StartDialogueNoSet(Player1)
+END
+
+// Starting the romance
+IF 
+InParty(Myself)
+Global("PGNaliaMatch","GLOBAL",1)
+Global("PGNaliaLoveTalk","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceActive","GLOBAL",1)
+RealSetGlobalTimer("PGNaliaRomanceTimer","GLOBAL",1200)
+SetGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// Ending the romance: concurrent
+IF 
+OR(3)
+Global("AerieRomanceActive","GLOBAL",2)
+Global("JaheiraRomanceActive","GLOBAL",2)
+Global("ViconiaRomanceActive","GLOBAL",2)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("PGNaliaAnotherRomanceWon","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceActive","GLOBAL",3)
+SetGlobal("PGNaliaAnotherRomanceWon","GLOBAL",1)
+END
+
+IF 
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("AerieRomanceActive","GLOBAL",1)
+Global("PGNaliaAerieRomanceLost","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("AerieRomanceActive","GLOBAL",3)
+SetGlobal("PGNaliaAerieRomanceLost","GLOBAL",1)
+END
+
+IF 
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("JaheiraRomanceActive","GLOBAL",1)
+Global("PGNaliaJaheiraRomanceLost","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("JaheiraRomanceActive","GLOBAL",3)
+SetGlobal("PGNaliaJaheiraRomanceLost","GLOBAL",1)
+END
+
+IF 
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("ViconiaRomanceActive","GLOBAL",1)
+Global("PGNaliaViconiaRomanceLost","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("ViconiaRomanceActive","GLOBAL",3)
+SetGlobal("PGNaliaViconiaRomanceLost","GLOBAL",1)
+END
+
+// Ending the romance: losing the keep
+IF 
+!Global("PCKeepOwner","GLOBAL",1)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceActive","GLOBAL",3)
+END
+
+// Ending the romance: PC sucks too much
+IF 
+GlobalGT("PGNaliaPCSucks","GLOBAL",6)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceActive","GLOBAL",3)
+END
+
+// Slaughtering the servants and running the keep really badly: Nalia immediately leaves forever in the unmodded game, as well.
+
+// Ending the romance: letting Nalia go to the funeral by herself
+IF 
+GlobalGT("NaliaWentToFuneral","GLOBAL",0)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaFuneralByHerself","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceActive","GLOBAL",3)
+SetGlobal("PGNaliaFuneralByHerself","GLOBAL",1)
+END
+
+// Ending the romance: very low reputation
+IF 
+InParty(Myself)
+ReputationLT(Player1,6)
+Global("PGNaliaRomanceBadRep","GLOBAL",0)
+AreaType(OUTDOOR)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+RealSetGlobalTimer("PGNaliaBadRepTimer","GLOBAL",600)
+SetGlobal("PGNaliaRomanceBadRep","GLOBAL",1)
+END
+
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceBadRep","GLOBAL",1)
+RealGlobalTimerNotExpired("PGNaliaBadRepTimer","GLOBAL")
+OR(2)
+!AreaType(OUTDOOR)
+ReputationGT(Player1,5)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceBadRep","GLOBAL",0)
+END
+
+IF 
+InParty(Myself)
+ReputationLT(Player1,6)
+Global("PGNaliaRomanceBadRep","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaBadRepTimer","GLOBAL")
+AreaType(OUTDOOR)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomanceActive","GLOBAL",3)
+SetGlobal("PGNaliaRomanceBadRep","GLOBAL",2)
+END
+
+// All non-dream lovetalks, so they never ever get stuck in player-initiated slot/are missed
+IF 
+InParty(Myself)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL") // so this block doesn't lag
+GlobalLT("PGNaliaLoveTalk","GLOBAL",65) // so this block doesn't lag after the romance is over
+OR(29)
+Global("PGNaliaLoveTalk","GLOBAL",2)
+Global("PGNaliaLoveTalk","GLOBAL",4)
+Global("PGNaliaLoveTalk","GLOBAL",6)
+Global("PGNaliaLoveTalk","GLOBAL",8)
+// LT10: Tired after a long day
+Global("PGNaliaLoveTalk","GLOBAL",12)
+Global("PGNaliaLoveTalk","GLOBAL",14)
+Global("PGNaliaLoveTalk","GLOBAL",16)
+Global("PGNaliaLoveTalk","GLOBAL",18)
+Global("PGNaliaLoveTalk","GLOBAL",20)
+Global("PGNaliaLoveTalk","GLOBAL",22)
+Global("PGNaliaLoveTalk","GLOBAL",24)
+Global("PGNaliaLoveTalk","GLOBAL",26)
+Global("PGNaliaLoveTalk","GLOBAL",28)
+Global("PGNaliaLoveTalk","GLOBAL",30)
+Global("PGNaliaLoveTalk","GLOBAL",32)
+Global("PGNaliaLoveTalk","GLOBAL",34)
+Global("PGNaliaLoveTalk","GLOBAL",36)
+Global("PGNaliaLoveTalk","GLOBAL",38)
+Global("PGNaliaLoveTalk","GLOBAL",40)
+Global("PGNaliaLoveTalk","GLOBAL",42)
+Global("PGNaliaLoveTalk","GLOBAL",44)
+Global("PGNaliaLoveTalk","GLOBAL",46)
+Global("PGNaliaLoveTalk","GLOBAL",48)
+Global("PGNaliaLoveTalk","GLOBAL",50)
+// LT52: Fake nookie
+Global("PGNaliaLoveTalk","GLOBAL",54)
+Global("PGNaliaLoveTalk","GLOBAL",56)
+// LT58: does not exist
+Global("PGNaliaLoveTalk","GLOBAL",60)
+Global("PGNaliaLoveTalk","GLOBAL",62)
+Global("PGNaliaLoveTalk","GLOBAL",64)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+THEN
+RESPONSE #100
+PlaySong(0)
+PlaySound("PGNALIA")
+StartDialogueNoSet(Player1)
+END
+
+// LT2
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+!AreaType(DUNGEON)
+ReputationGT(Player1,8)
+!AreaCheck("AR1304")
+!AreaCheck("AR1305")
+!AreaCheck("AR1306")
+!AreaCheck("AR1307")
+Global("PGNaliaLoveTalk","GLOBAL",1)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaLoveTalk","GLOBAL",2)
+END
+
+// LT4
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+GlobalGT("NaliaComplainsIsaea","LOCALS",0)
+Global("PGNaliaRomanceLT2Set","GLOBAL",0)
+THEN
+RESPONSE #100
+RealSetGlobalTimer("PGNaliaRomanceLT2Timer","GLOBAL",300)
+SetGlobal("PGNaliaRomanceLT2Set","GLOBAL",1)
+END
+
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceLT2Timer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+!AreaType(DUNGEON)
+ReputationGT(Player1,8)
+Global("PGNaliaLoveTalk","GLOBAL",3)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaLoveTalk","GLOBAL",4)
+END
+
+// LT6, LT8, LT16, LT18, LT20, LT24, LT28, LT30, LT32
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+ReputationGT(Player1,8)
+!AreaType(DUNGEON)
+OR(9)
+Global("PGNaliaLoveTalk","GLOBAL",5)
+Global("PGNaliaLoveTalk","GLOBAL",7)
+Global("PGNaliaLoveTalk","GLOBAL",15)
+Global("PGNaliaLoveTalk","GLOBAL",17)
+Global("PGNaliaLoveTalk","GLOBAL",19)
+Global("PGNaliaLoveTalk","GLOBAL",23)
+Global("PGNaliaLoveTalk","GLOBAL",27)
+Global("PGNaliaLoveTalk","GLOBAL",29)
+Global("PGNaliaLoveTalk","GLOBAL",31)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT12
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+ReputationGT(Player1,8)
+!AreaType(DUNGEON)
+PartyRested()
+Global("PGNaliaLoveTalk","GLOBAL",11)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT14
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+ReputationGT(Player1,8)
+Global("NaliaIsaeaPlotDone","GLOBAL",1)
+Global("PGNaliaLoveTalk","GLOBAL",13)
+Global("PGNaliaLT14Set","GLOBAL",0)
+THEN
+RESPONSE #100
+RealSetGlobalTimer("PGNaliaLT14Timer","GLOBAL",500)
+SetGlobal("PGNaliaLT14Set","GLOBAL",1)
+END
+
+IF 
+InParty(Myself)
+RealGlobalTimerExpired("PGNaliaLT14Timer","GLOBAL")
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+!AreaType(DUNGEON)
+ReputationGT(Player1,8)
+Global("NaliaIsaeaPlotDone","GLOBAL",1)
+Global("PGNaliaLoveTalk","GLOBAL",13)
+Global("PGNaliaLT14Set","GLOBAL",1)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaLT14Set","GLOBAL",2)
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT22
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+AreaType(CITY)
+ReputationGT(Player1,8)
+Global("PGNaliaLoveTalk","GLOBAL",21)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT26
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+CombatCounter(0)
+!See([ENEMY])
+!AreaType(DUNGEON)
+ReputationGT(Player1,8)
+OR(8)
+AreaCheck("AR0020")
+AreaCheck("AR0300")
+AreaCheck("AR0400")
+AreaCheck("AR0500")
+AreaCheck("AR0700")
+AreaCheck("AR0900")
+AreaCheck("AR1000")
+AreaCheck("AR2000")
+Global("PGNaliaLoveTalk","GLOBAL",25)
+Global("PGNaliaBeggarLT26","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaBeggarLT26","GLOBAL",1)
+CreateCreatureObjectOffset("PGNalBeg","Nalia",[30.30]) 
+ActionOverride("PGNalBeg",Dialogue("Nalia"))
+END
+
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+!See("PGNalBeg")
+CombatCounter(0)
+!See([ENEMY])
+ReputationGT(Player1,8)
+Global("PGNaliaLoveTalk","GLOBAL",25)
+Global("PGNaliaBeggarLT26","GLOBAL",2)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT30 - Girls counter
+IF
+Global("PGNaliaLovetalk","LOCALS",29)
+Global("PGDidGirlsCheck","LOCALS",0)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck","LOCALS",1)
+END
+
+IF 
+Global("PGDidGirlsCheck","LOCALS",1)
+InParty(Player2)
+!Name("Nalia",Player2)
+Gender(Player2,FEMALE)
+Global("PGDidGirlsCheck2","LOCALS",0)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck2","LOCALS",1)
+IncrementGlobal("FWGirlsInParty","GLOBAL",1)
+END
+
+IF 
+Global("PGDidGirlsCheck","LOCALS",1)
+InParty(Player3)
+!Name("Nalia",Player3)
+Gender(Player3,FEMALE)
+Global("PGDidGirlsCheck3","LOCALS",0)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck3","LOCALS",1)
+IncrementGlobal("FWGirlsInParty","GLOBAL",1)
+END
+
+IF 
+Global("PGDidGirlsCheck","LOCALS",1)
+InParty(Player4)
+!Name("Nalia",Player4)
+Gender(Player4,FEMALE)
+Global("PGDidGirlsCheck4","LOCALS",0)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck4","LOCALS",1)
+IncrementGlobal("FWGirlsInParty","GLOBAL",1)
+END
+
+IF 
+Global("PGDidGirlsCheck","LOCALS",1)
+InParty(Player5)
+!Name("Nalia",Player5)
+Gender(Player5,FEMALE)
+Global("PGDidGirlsCheck5","LOCALS",0)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck5","LOCALS",1)
+IncrementGlobal("FWGirlsInParty","GLOBAL",1)
+END
+
+IF 
+Global("PGDidGirlsCheck","LOCALS",1)
+InParty(Player6)
+!Name("Nalia",Player6)
+Gender(Player6,FEMALE)
+Global("PGDidGirlsCheck6","LOCALS",0)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck6","LOCALS",1)
+IncrementGlobal("FWGirlsInParty","GLOBAL",1)
+END
+
+IF
+Global("PGDidGirlsCheck","LOCALS",1)
+THEN
+RESPONSE #100
+SetGlobal("PGDidGirlsCheck","LOCALS",2)
+END
+
+// Ending romance before LT32, if things are not going well in terms of a good guy/good keep operator
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+OR(2)
+ReputationLT(Player1,10)
+GlobalGT("KPRevolt","GLOBAL",5)
+Global("PGNaliaLoveTalk","GLOBAL",31)
+Global("PGNaliaRomancePCBadGuy","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaRomancePCBadGuy","GLOBAL",1)
+SetGlobal("PGNaliaRomanceActive","GLOBAL",3)
+END
+
+// LT34, LT36, LT38, LT40, LT42, LT44
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+GlobalLT("PGNaliaLoveTalk","GLOBAL",65)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+!AreaType(DUNGEON)
+ReputationGT(Player1,8)
+Global("PGNaliaIsaeaOffed","GLOBAL",2)
+OR(6)
+Global("PGNaliaLoveTalk","GLOBAL",33)
+Global("PGNaliaLoveTalk","GLOBAL",35)
+Global("PGNaliaLoveTalk","GLOBAL",37)
+Global("PGNaliaLoveTalk","GLOBAL",39)
+Global("PGNaliaLoveTalk","GLOBAL",41)
+Global("PGNaliaLoveTalk","GLOBAL",43)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT46, LT48, LT50, LT54, LT60, LT62, LT64
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+GlobalLT("PGNaliaLoveTalk","GLOBAL",65)
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+!AreaType(DUNGEON)
+ReputationGT(Player1,8)
+OR(7)
+Global("PGNaliaLoveTalk","GLOBAL",45)
+Global("PGNaliaLoveTalk","GLOBAL",47)
+Global("PGNaliaLoveTalk","GLOBAL",49)
+Global("PGNaliaLoveTalk","GLOBAL",53)
+Global("PGNaliaLoveTalk","GLOBAL",59)
+Global("PGNaliaLoveTalk","GLOBAL",61)
+Global("PGNaliaLoveTalk","GLOBAL",63)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT56 
+IF 
+InParty(Myself)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+AreaCheck("AR1306") 
+Global("PGNaliaLoveTalk","GLOBAL",55)
+THEN
+RESPONSE #100
+IncrementGlobal("PGNaliaLoveTalk","GLOBAL",1)
+END
+
+// LT56b
+IF 
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+Global("PGNaliaLT65Nookie","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaLT65Nookie","GLOBAL",3)
+END
+
+IF 
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaLT65Nookie","GLOBAL",3)
+THEN
+RESPONSE #100
+PlaySong(0)
+PlaySound("PGNALIA")
+StartDialogueNoSet(Player1)
+END
+
+// Phaere Innuendo
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+Global("PhaereInnuendo","GLOBAL",1)
+!Range("Phaere",6)
+Global("PGNaliaMad1","LOCALS",0)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaMad1","LOCALS",1)
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaMad1","LOCALS",1)
+THEN
+RESPONSE #100
+StartDialogueNoSet(Player1)
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+Global("PhaereInnuendo","GLOBAL",2)
+!Range("Phaere",6)
+Global("PGNaliaMad2","LOCALS",0)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaMad2","LOCALS",1)
+StartDialogueNoSet(Player1)
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaMad2","LOCALS",1)
+THEN
+RESPONSE #100
+StartDialogueNoSet(Player1)
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+Global("PhaereInnuendo","GLOBAL",3)
+!Range("Phaere",6)
+Global("PGNaliaMad3","LOCALS",0)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaMad3","LOCALS",1)
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaMad3","LOCALS",1)
+THEN
+RESPONSE #100
+StartDialogueNoSet(Player1)
+END
+
+// Keep, spawning Teodora
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+AreaCheck("AR1306") 
+Global("PGNaliaQuest","GLOBAL",0)
+Global("PGNaliaLoveTalk","GLOBAL",33)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaQuest","GLOBAL",1)
+CreateCreatureObjectOffset("PGNalTeo","Nalia",[10.10]) 
+ActionOverride("PGNalTeo",Dialogue("Nalia"))
+END
+
+// Government District, spawning the apprentice
+IF
+InParty(Myself)
+GlobalLT("PGNaliaAlynder","GLOBAL",2)
+AreaCheck("AR1000")
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+Global("PGNaliaQuest","GLOBAL",6)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaQuest","GLOBAL",7)
+CreateCreatureObjectOffset("PGNalWiv","Nalia",[30.30]) 
+CreateCreatureObjectOffset("PGNalGha","Nalia",[55.44]) 
+ActionOverride("PGNalWiv",Dialogue("PGNalGha"))
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaQuest","GLOBAL",8)
+THEN
+RESPONSE #100
+ActionOverride("PGNalWiv",Dialogue("Nalia"))
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaQuest","GLOBAL",9)
+Global("PGNaliaWivCom","GLOBAL",0)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaWivCom","GLOBAL",1)
+END
+
+IF
+InParty(Myself)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+Global("PGNaliaWivCom","GLOBAL",1)
+THEN
+RESPONSE #100
+StartDialogueNoSet(Player1)
+END
+
+// Flirts
+IF
+InParty(Myself)
+Global("PGNaliaFlirtsStart","LOCALS",0)
+GlobalGT("PGNaliaLoveTalk","GLOBAL",12)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+ReputationGT(Player1,8)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaFlirtsStart","LOCALS",1)
+RealSetGlobalTimer("PGNaliaFlirtTimer","GLOBAL",300)
+END
+
+IF
+InParty(Myself)
+RealGlobalTimerExpired("PGNaliaFlirtTimer","GLOBAL")
+Global("PGNaliaStartFlirtSOA","GLOBAL",0)
+Global("FWDisableFlirts","GLOBAL",0)
+!Global("PGNaliaNotSpeaking","GLOBAL",1)
+ReputationGT(Player1,8)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+See(Player1)
+CombatCounter(0)
+!See([ENEMY])
+!Global("Chapter","GLOBAL",%bg2_chapter_5%)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaStartFlirtSOA","GLOBAL",1)
+END
+
+IF
+InParty(Myself)
+Global("PGNaliaStartFlirtSOA","GLOBAL",1)
+!StateCheck(Myself,CD_STATE_NOTVALID)
+!StateCheck(Player1,CD_STATE_NOTVALID)
+THEN
+RESPONSE #100
+StartDialogueNoSet(Player1)
+END
+
+IF
+InParty(Myself)
+RealGlobalTimerExpired("PGNaliaFlirtTimer","GLOBAL")
+Global("FWDisableFlirts","GLOBAL",0)
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+!CombatCounter(0)
+THEN
+RESPONSE #100
+RealSetGlobalTimer("PGNaliaFlirtTimer","GLOBAL",150)
+END
+
+// Nalia's abduction in romance
+IF
+InParty(Myself)
+GlobalTimerExpired("IsaeaArrestTimer","GLOBAL")
+RealGlobalTimerExpired("PGNaliaRomanceTimer","GLOBAL")
+OR(2)
+Global("PGNaliaRomanceActive","GLOBAL",2)
+Global("PGNaliaRomanceActive","GLOBAL",1)
+Global("PGNaliaLoveTalk","GLOBAL",13)
+Global("NaliaJamie","GLOBAL",0)
+!Dead("ISAEA")
+!Exists("ISAEA")
+!Global("Chapter","GLOBAL",%bg2_chapter_4%)
+!Global("Chapter","GLOBAL",%bg2_chapter_5%)
+!Global("Chapter","GLOBAL",%bg2_chapter_7%)
+AreaType(OUTDOOR)
+CombatCounter(0)
+THEN
+RESPONSE #100
+CreateCreatureObjectOffScreen("ISAEA",Myself,0,0,0)
+CreateCreatureObjectOffScreen("ISAMNG1",Myself,0,0,0)
+CreateCreatureObjectOffScreen("ISAMNG2",Myself,0,0,0)
+CreateCreatureObjectOffScreen("ISAMNG3",Myself,0,0,0)
+CreateCreatureObjectOffScreen("ISAMNG4",Myself,0,0,0)
+SetGlobal("NaliaJamie","GLOBAL",1)
+END
+
+// Nalia's script checking
+IF
+Global("PGNaliaHasNoDungeonSound","GLOBAL",0)
+OR(3)
+AreaCheck("AR1301")
+AreaCheck("AR1302")
+AreaCheck("AR1303")
+THEN
+RESPONSE #100
+SetPlayerSound(Myself,-1,AREA_DUNGEON)
+SetGlobal("PGNaliaHasNoDungeonSound","GLOBAL",1)
+END
+
+IF
+Global("PGNaliaHasNoDungeonSound","GLOBAL",1)
+!AreaCheck("AR1301")
+!AreaCheck("AR1302")
+!AreaCheck("AR1303")
+THEN
+RESPONSE #100
+SetPlayerSound(Myself,36712,AREA_DUNGEON)
+SetGlobal("PGNaliaHasNoDungeonSound","GLOBAL",0)
+END

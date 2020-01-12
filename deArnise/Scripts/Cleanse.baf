@@ -1,0 +1,25 @@
+IF
+Contains("PGNalBod",Myself)
+Global("PGCleanseVampire","AR1401",0)
+THEN
+RESPONSE #100
+SetGlobal("PGCleanseVampire","AR1401",1)
+END
+
+IF
+Contains("PGNalBod",Myself)
+Contains("MISCBP",Myself)
+THEN
+RESPONSE #100
+SetInterrupt(FALSE)
+SetGlobal("PGCleanseVampire","AR1401",2)
+DestroyItem("PGNalBod")
+DestroyItem("MISCBP")
+CreateVisualEffect("SPMETSW2",[2592.1701])
+CreateVisualEffect("SPMETSW2",[2645.1742])
+Wait(1)
+CreateVisualEffect("SPFLESHS",[2565.1677])
+Wait(1)
+MoveGlobal("AR1401","Nalia",[2565.1677])
+SetInterrupt(TRUE)
+END

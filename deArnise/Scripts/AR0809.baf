@@ -1,0 +1,16 @@
+IF
+Global("PGNaliaVampire","GLOBAL",1)
+THEN
+RESPONSE #100
+SetGlobal("PGNaliaVampire","GLOBAL",2)
+CreateCreature("PGNalVam",[1473.332],2)
+END
+
+IF
+Dead("C6Bodhi")
+Global("PGNalJournal809","GLOBAL",0)
+THEN
+RESPONSE #100
+EraseJournalEntry(@10000)
+SetGlobal("PGNalJournal809","GLOBAL",1)
+END

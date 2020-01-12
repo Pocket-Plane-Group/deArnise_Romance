@@ -1,0 +1,25 @@
+IF
+True()
+THEN
+RESPONSE #100
+CutSceneId(Player1)
+Wait(1)
+FadeToColor([20.0],0)
+Wait(1)
+SetGlobal("PGNaliaLT65Nookie","GLOBAL",1)
+LeaveAreaLUAPanic("AR1307","",[1429.1641],10)
+LeaveAreaLUA("AR1307","",[1429.1641],10)
+ActionOverride(Player2,LeaveAreaLUA("AR1307","",[2061.917],0))
+ActionOverride(Player3,LeaveAreaLUA("AR1307","",[2023.917],0))
+ActionOverride(Player4,LeaveAreaLUA("AR1307","",[2061.880],0))
+ActionOverride(Player5,LeaveAreaLUA("AR1307","",[2023.880],0))
+ActionOverride(Player6,LeaveAreaLUA("AR1307","",[2061.832],0))
+MultiPlayerSync()
+ActionOverride("Nalia",JumpToPoint([1460.1623]))
+ActionOverride("Nalia",FaceObject(Player1))
+Wait(1)
+FadeFromColor([20.0],0)
+MoveViewObject(Player1,INSTANT)
+Wait(1)
+ActionOverride("Nalia",StartDialogueNoSet(Player1))
+END

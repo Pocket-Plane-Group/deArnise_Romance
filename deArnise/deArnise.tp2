@@ -1,0 +1,214 @@
+BACKUP ~deArnise/Backup~
+
+//AUTHOR ~jcompton@pocketplane.net~
+SUPPORT ~http://forums.pocketplane.net/index.php/board,12.0.html~
+
+README ~deArnise/README-DeArnise.txt~
+
+VERSION ~v6~
+
+ALWAYS
+  ACTION_IF NOT VARIABLE_IS_SET bg2_chapter BEGIN
+    ACTION_IF GAME_IS ~eet~ BEGIN
+      OUTER_SET bg2_chapter = 12
+    END ELSE BEGIN
+      OUTER_SET bg2_chapter = 0
+    END
+    OUTER_FOR (i=1; i<=10; i=i+1) BEGIN
+      OUTER_SET bg2_chapter = bg2_chapter + 1
+      OUTER_SPRINT name_source ~bg2_chapter_%i%~
+      OUTER_SET EVAL ~%name_source%~ = bg2_chapter
+    END
+  END
+
+
+  // Character encoding conversion for BG2EE
+  ACTION_DEFINE_ARRAY deArnise_noconvert BEGIN END
+  ACTION_DEFINE_ARRAY deArnise_reload BEGIN Setup-deArnise END
+
+  LAF HANDLE_CHARSETS
+    INT_VAR
+      infer_charsets = 1
+    STR_VAR
+      // Translation folders directly in the mod folder (iconv directory to keep at the same place)
+      tra_path = EVAL ~%MOD_FOLDER%~
+      noconvert_array = deArnise_noconvert
+      reload_array = deArnise_reload
+  END
+
+END
+
+AUTO_TRA ~deArnise/%s~
+
+LANGUAGE ~English~ ~English~ ~deArnise/English/Setup-deArnise.tra~
+LANGUAGE ~Russian (translation by Aleksander Zudwa~ ~russian~ ~deArnise/russian/Setup-deArnise.tra~
+LANGUAGE ~Francais (traduit par Mornagest des d'Oghmatiques)~ ~french~ ~deArnise/french/Setup-deArnise.tra~
+
+BEGIN @0
+
+COPY ~deArnise/Areas~ ~override~
+
+COPY ~deArnise/Music~ ~music~
+
+COPY_EXISTING ~songlist.2da~ ~override~
+  SET_2DA_ENTRY 0 2 3 ~BLANK.MUS~
+
+APPEND ~STATE.IDS~ ~0x80101FEF CD_STATE_NOTVALID~
+UNLESS ~CD_STATE_NOTVALID~
+
+ACTION_IF GAME_IS ~BG2EE eet~ BEGIN
+  ADD_JOURNAL EXISTING TITLE (#74337) @10000 @10001 
+  ADD_JOURNAL @10002 @10003 @10004 @10005 @10006 @10007
+  COPY ~deArnise/Areas/pvrz~ ~override~
+END ELSE BEGIN
+  COPY ~deArnise/Areas/tis_v1~ ~override~
+END
+
+COPY ~deArnise/Items/PGNalBod.itm~ ~override~
+SAY NAME1 @1
+SAY NAME2 @1
+SAY UNIDENTIFIED_DESC @2
+SAY DESC @2
+
+COPY ~deArnise/Items/PGNalTal.itm~ ~override~
+SAY NAME1 @3
+SAY NAME2 @3
+SAY UNIDENTIFIED_DESC @4
+SAY DESC @4
+
+COPY ~deArnise/Creatures/PGNalVam.cre~ ~override~
+
+COPY_EXISTING ~KPMAID01.cre~ ~override/PGNALTEO.cre~
+SAY NAME1 @5
+SAY NAME2 @5
+WRITE_ASCII 0x2cc ~PGNALTEO~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALTEO~ #32 // DV
+
+COPY_EXISTING ~SASSAR.cre~ ~override/PGNALBEG.cre~
+SAY NAME1 @6
+SAY NAME2 @6
+WRITE_ASCII 0x2cc ~PGNALBEG~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALBEG~ #32 // DV
+
+COPY_EXISTING ~HELLVICT.cre~ ~override/PGNALBUR.cre~
+SAY NAME1 @7
+SAY NAME2 @7
+WRITE_ASCII 0x2cc ~PGNALBUR~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALBUR~ #32 // DV
+
+COPY_EXISTING ~MGAPPR03.cre~ ~override/PGNALGHA.cre~
+SAY NAME1 @8
+SAY NAME2 @8
+WRITE_ASCII 0x2cc ~PGNALGHA~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALGHA~ #32 // DV
+
+COPY_EXISTING ~BMTOWN2.cre~ ~override/PGNALWIV.cre~
+SAY NAME1 @9
+SAY NAME2 @9
+WRITE_ASCII 0x2cc ~PGNALWIV~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALWIV~ #32 // DV
+
+COPY ~deArnise/Creatures/PGNALISA.cre~ ~override/PGNALISA.cre~
+SAY NAME1 @10
+SAY NAME2 @10
+WRITE_ASCII 0x248 ~PGNALISA~ #8 // override
+WRITE_ASCII 0x2cc ~PGNALISA~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALISA~ #32 // DV
+
+COPY_EXISTING ~MGASS01.cre~ ~override/PGNALTER.cre~
+SAY NAME1 @11
+SAY NAME2 @11
+WRITE_ASCII 0x2cc ~PGNALTER~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALTER~ #32 // DV
+
+COPY ~deArnise/Creatures/PGNALGEL.cre~ ~override/PGNALGEL.cre~
+SAY NAME1 @12
+SAY NAME2 @12
+WRITE_ASCII 0x2cc ~PGNALGEL~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALGEL~ #32 // DV
+
+COPY_EXISTING ~MGASS02.cre~ ~override/PGNALPOC.cre~
+SAY NAME1 @13
+SAY NAME2 @13
+WRITE_ASCII 0x2cc ~PGNALPOC~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALPOC~ #32 // DV
+
+COPY_EXISTING ~MGASS03.cre~ ~override/PGNALLEM.cre~
+SAY NAME1 @14
+SAY NAME2 @14
+WRITE_ASCII 0x2cc ~PGNALLEM~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALLEM~ #32 // DV
+
+COPY_EXISTING ~MONKTU9.cre~ ~override/PGNALALY.cre~
+SAY NAME1 @15
+SAY NAME2 @15
+WRITE_ASCII 0x2cc ~PGNALALY~ #8  // dialogue
+WRITE_ASCII 0x280 ~PGNALALY~ #32 // DV
+
+APPEND ~itemdial.2da~
+~PGNALTAL    14117 PGNALTAL~
+UNLESS ~PGNALTAL~
+
+COMPILE EVALUATE_BUFFER ~deArnise/Dialogue/PGNalLT.d~
+        ~deArnise/Dialogue/PGNalP.d~
+        ~deArnise/Dialogue/PGNalQ.d~
+        
+        ~deArnise/Scripts/PGNalC1a.baf~
+        ~deArnise/Scripts/PGNalC2a.baf~
+        ~deArnise/Scripts/PGNalC2b.baf~
+        ~deArnise/Scripts/PGNalC2c.baf~
+        ~deArnise/Scripts/PGNalC2d.baf~
+        ~deArnise/Scripts/PGNalC2e.baf~
+        ~deArnise/Scripts/PGNalC2f.baf~
+        ~deArnise/Scripts/PGNalC2g.baf~
+        ~deArnise/Scripts/PGNalIsa.baf~
+        ~deArnise/Scripts/PGNalC53.baf~
+        ~deArnise/Scripts/PGVamNal.baf~
+
+COMPILE EVALUATE_BUFFER ~dearnise/dialogue/PGNalFL.d~
+
+// adjusting Nalia's funeral 
+COPY_EXISTING ~Nalia.bcs~ ~override~
+DECOMPILE_BCS_TO_BAF
+REPLACE_TEXTUALLY ~SetGlobalTimer("NaliaMessenger","GLOBAL",SEVEN_DAYS)~ ~SetGlobalTimer("NaliaMessenger","GLOBAL",THREE_DAYS)~
+COMPILE_BAF_TO_BCS
+// BUT_ONLY_IF_IT_CHANGES
+
+// adjusting Nalia's abduction
+COPY_EXISTING ~Nalia.bcs~ ~override~
+DECOMPILE_BCS_TO_BAF
+REPLACE_TEXTUALLY ~Global("NaliaJamie","GLOBAL",0)~ ~Global("NaliaJamie","GLOBAL",0) !Global("PGNaliaRomanceActive","GLOBAL",1) !Global("PGNaliaRomanceActive","GLOBAL",2)~
+COMPILE_BAF_TO_BCS
+// BUT_ONLY_IF_IT_CHANGES
+
+EXTEND_TOP ~Nalia.bcs~ ~deArnise/Scripts/PGNalia.baf~ EVALUATE_BUFFER
+EXTEND_TOP ~NaliaD.bcs~ ~deArnise/Scripts/PGNaliaD.baf~ EVALUATE_BUFFER
+EXTEND_BOTTOM ~AR0300.bcs~ ~deArnise/Scripts/AR0300.baf~
+EXTEND_BOTTOM ~AR0809.bcs~ ~deArnise/Scripts/AR0809.baf~
+EXTEND_BOTTOM ~BODHIAMB.bcs~ ~deArnise/Scripts/BODHIAMB.baf~
+EXTEND_BOTTOM ~VAMPAMB.bcs~ ~deArnise/Scripts/VAMPAMB.baf~
+EXTEND_BOTTOM ~CLEANSE.bcs~ ~deArnise/Scripts/CLEANSE.baf~
+
+// HANDLE_AUDIO can handle installation and uninstallation for Windows/OSX/Linux
+// *.bat and *.sh file could be removed
+// sox and oggdec are expected to be in the audio directory
+/*
+ACTION_IF (~%WEIDU_OS%~ STRING_EQUAL_CASE ~win32~) THEN BEGIN
+    AT_NOW ~deArnise/Commands/AudioInstall.bat~
+    AT_UNINSTALL ~deArnise/Commands/AudioUninstall.bat~
+END ELSE BEGIN
+ACTION_IF (~%WEIDU_OS%~ STRING_EQUAL_CASE ~osx~) THEN BEGIN
+    AT_NOW                   ~sh deArnise/Commands/AudioInstall.sh~
+    AT_INTERACTIVE_UNINSTALL ~sh deArnise/Commands/AudioUninstall.sh~
+END
+END
+*/
+LAF HANDLE_AUDIO
+	STR_VAR
+		audio_path = EVAL ~deArnise/Audio~
+		oggdec_path = ~deArnise/Audio~
+		sox_path = ~deArnise/Audio~
+END
+
+// Readme display transfered at the beginning of the process with the README statement
+// AT_INTERACTIVE_EXIT ~VIEW deArnise/README-DeArnise.txt~

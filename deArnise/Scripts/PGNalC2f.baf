@@ -1,0 +1,27 @@
+IF
+True()
+THEN
+RESPONSE #100
+CutSceneId(Player1)
+FadeToColor([20.0],0)
+SetGlobal("PGNaliaQuestTeleported","GLOBAL",1)
+Wait(1)
+LeaveAreaLUAPanic("PGDARN","",[236.667],8)
+LeaveAreaLUA("PGDARN","",[236.667],8)
+ActionOverride(Player2,LeaveAreaLUA("PGDARN","",[197.674],8))
+ActionOverride(Player3,LeaveAreaLUA("PGDARN","",[209.647],8))
+ActionOverride(Player4,LeaveAreaLUA("PGDARN","",[279.678],8))
+ActionOverride(Player5,LeaveAreaLUA("PGDARN","",[256.697],8))
+ActionOverride(Player6,LeaveAreaLUA("PGDARN","",[221.715],8))
+MultiPlayerSync()
+CreateCreature("PGNALISA",[711.264],0)
+CreateCreature("PGNALTER",[723.278],0)
+CreateCreature("PGNALGEL",[786.336],0)
+CreateCreature("PGNALLEM",[842.208],6)
+CreateCreature("PGNALPOC",[890.258],0)
+Wait(1)
+FadeFromColor([20.0],0)
+MoveViewObject(Player1,INSTANT)
+Wait(1)
+ActionOverride("PGNALGEL",StartDialogueNoSet("PGNALTER"))
+END

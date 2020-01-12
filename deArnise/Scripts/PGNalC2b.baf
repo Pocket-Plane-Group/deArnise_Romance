@@ -1,0 +1,10 @@
+IF
+True()
+THEN
+RESPONSE #100
+CutSceneId(Player1)
+Wait(1)
+ForceSpell("PGNALBUR",CLERIC_HEAL)
+Wait(8)
+ActionOverride("PGNALBUR",StartDialogueNoSet("NALIA"))
+END
